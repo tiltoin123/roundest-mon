@@ -4,4 +4,14 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = nextConfig
+/** @type {import('next').NextConfig} */
+module.exports = {
+  reactStrictMode: true,
+}
+
+
+module.exports= {
+  images:{
+    domains:["raw.githubusercontent.com"],
+  },
+}
