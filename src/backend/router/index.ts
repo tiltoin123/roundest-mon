@@ -1,49 +1,39 @@
-import * as trpc from '@trpc/server';
-import { resolveHref } from 'next/dist/shared/lib/router/router';
-import { z } from 'zod';
-import {PokemonClient} from 'pokenode-ts';
-import { resolve } from 'path';
-import {prisma} from "@/backend/router/utils/prisma";
+import * as trpc from "@trpc/server";
+import { z } from "zod";
+import { prisma } from "@/backend/utils/prisma";
+import { getOptionsForVote } from "@/utils/getRandomPokemon";
 
-/*export const appRouter = trpc
+export const appRouter = trpc
   .router()
-  .query('hello', {
-    input: z
-      .object({
-        text: z.string().nullish(),
-      })
-      .nullish(),
-    resolve({ input }) {
-      return {
-        greeting: `hello ${input?.text ?? 'world'}`,
-      };
+  .query("get-pokemon-pair", {
+    async resolve() {
+      const [first, second] = getOptionsForVote();
+
+      const bothPokemon = await prisma.pokemon.findMany({
+        where: { id: { in: [first, second] } },
+      });
+
+      if (bothPokemon.length !== 2)
+        throw new Error("Failed to find two pokemon");
+
+      return { firstPokemon: bothPokemon[0], secondPokemon: bothPokemon[1] };
     },
-  });})*/
-
-export const appRouter = trpc.router().query("get-pokemon-by-id", {
-  input: z.object({ id: z.number() }),
-  async resolve({input}){
-    const pokeApiConnection = new PokemonClient();
-
-    const pokemon =await pokeApiConnection.getPokemonById(input.id);
-    return {name :pokemon.name, sprites:pokemon.sprites};
-  }
-  }).mutation("cast-vote",{
+  })
+  .mutation("cast-vote", {
     input: z.object({
       votedFor: z.number(),
       votedAgainst: z.number(),
     }),
-    async resolve(input){
+    async resolve({ input }) {
       const voteInDb = await prisma.vote.create({
-        data:{
+        data: {
           votedAgainstId: input.votedAgainst,
           votedForId: input.votedFor,
-        }
+        },
       });
-      return {sucess:true, vote: voteInDb};
+      return { success: true, vote: voteInDb };
     },
-  })
-
+  });
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
