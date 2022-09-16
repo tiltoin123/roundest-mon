@@ -1,35 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Roundest - Which Pokémon is most round?
 
-Roundest-mon qual é o pokemon mais roliço?
-a pergunta que não quer calar
+Answering all of life's toughest questions
+
+## Why?
+
+Why not. I [streamed most of the creation of this project if you're curious](https://www.youtube.com/watch?v=PKy2lYEnhgs). Regardless of how you feel about the idea, I think the technical details of this implementation are worth learning from.
 
 ## Getting Started
 
-First, run the development server:
+Prerequisite:
 
-```bash
-npm run dev
+- MySQL local database (or Planetscale connection using PScale CLI)
+- npm
 
+Setup
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Clone repo
+1. `npm install`
+1. Create `.env` file if one does not already exist
+1. Add connection URLs for both database and shadow db to .env ([example .env file here](https://gist.github.com/TheoBr/e450c52a52a9f9c9b49ef07212689685))
+1. Initialize database - `npx prisma migrate dev`
+1. Initialize base data set - `npm run ts-node ./scripts/fill-db.ts`
+1. Run dev server `npm run dev`
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## TODO
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [x] Use next/image to handle image caching and better rendering
+- [x] Persist data fetched from PokemonAPI
+- [x] Create the results page with counting/sorting
+- [x] Better loading state between votes

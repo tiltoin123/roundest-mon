@@ -1,6 +1,6 @@
 import * as trpc from "@trpc/server";
 import { z } from "zod";
-import { prisma } from "@/backend/router/utils/prisma";
+import { prisma } from "@/backend/utils/prisma";
 import { getOptionsForVote } from "@/utils/getRandomPokemon";
 
 export const appRouter = trpc

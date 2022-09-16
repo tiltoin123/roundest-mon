@@ -1,17 +1,8 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-}
+const { withPlausibleProxy } = require("next-plausible");
 
-/** @type {import('next').NextConfig} */
-module.exports = {
-  reactStrictMode: true,
-}
-
-
-module.exports= {
-  images:{
-    domains:["raw.githubusercontent.com"],
+module.exports = withPlausibleProxy()({
+  images: {
+    domains: ["raw.githubusercontent.com"],
+    minimumCacheTTL: 6000000,
   },
-}
+});
